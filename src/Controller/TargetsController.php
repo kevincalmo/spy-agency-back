@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Targets;
 use App\Form\TargetType;
 use App\Repository\TargetsRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +19,18 @@ class TargetsController extends AbstractController
     /**
      * @Route("/targets", name="targets")
      */
-    public function index(TargetsRepository $targetsRepository): Response
+    public function index(TargetsRepository $targetsRepository, Request $request, PaginatorInterface $paginatorInterface): Response
     {
 
-        $targets = $targetsRepository->findAll();
+        $donnees = $targetsRepository->findAll();
+
+        $targets = $paginatorInterface->paginate(
+            $donnees,
+            $request->query->getInt('page',1),
+            10
+        );
+
+
         return $this->render('targets/index.html.twig', [
             'items'=>$targets,
             'type'=>'targets',

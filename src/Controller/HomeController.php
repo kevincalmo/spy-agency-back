@@ -21,7 +21,7 @@ class HomeController extends AbstractController
         $missions = $paginatorInterface->paginate(
             $donnees,
             $request->query->getInt('page',1),//numéro de la page en cours, 1 par défaut
-            1
+            10
         );
 
 

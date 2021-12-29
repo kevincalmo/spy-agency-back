@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Agents;
 use App\Form\AgentType;
 use App\Repository\AgentsRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,9 +21,15 @@ class AgentsController extends AbstractController
      * @Route("/agents", name="agents")
      * 
      */
-    public function index(AgentsRepository $agentsRepository): Response
+    public function index(AgentsRepository $agentsRepository, Request $request, PaginatorInterface $paginatorInterface): Response
     {
-        $agents = $agentsRepository->findAll();
+        $donnees = $agentsRepository->findAll();
+
+        $agents = $paginatorInterface->paginate(
+            $donnees,
+            $request->query->getInt('page',1),
+            10
+        );
     
         return $this->render('agents/index.html.twig', [
            'items'=> $agents,

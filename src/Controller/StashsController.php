@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Stashs;
 use App\Form\StashType;
 use App\Repository\StashsRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,15 @@ class StashsController extends AbstractController
     /**
      * @Route("/stashs", name="stashs")
      */
-    public function index(StashsRepository $stashsRepository): Response
+    public function index(StashsRepository $stashsRepository, Request $request, PaginatorInterface $paginatorInterface): Response
     {
-        $stashs = $stashsRepository->findAll();
+        $donnees = $stashsRepository->findAll();
+
+        $stashs = $paginatorInterface->paginate(
+            $donnees,
+            $request->query->getInt('page',1),
+            10
+        );
 
         return $this->render('stashs/index.html.twig', [
             'items'=>$stashs,
