@@ -44,26 +44,34 @@ class MissionType extends AbstractType
             ])
             ->add('agents',EntityType::class, [
                 'class'=>Agents::class,
-                'choice_label'=>'code_auth',
+                'choice_label'=>function($agent){
+                    return ucfirst($agent->getLastName()).' '.ucfirst($agent->getFirstName()).' - '.$agent->getCountry();
+                },
                 'label'=>'Agents',
                 'multiple'=>true,
             ])
             ->add('targets',EntityType::class, [
                 'class'=>Targets::class,
-                'choice_label'=>'code_name',
+                'choice_label'=>function($target){
+                    return ucfirst($target->getLastName()).' '.ucfirst($target->getFirstName()).' - '.$target->getCountry();
+                },
                 'label'=>'Cibles',
                 'multiple'=>true,
             ])
             ->add('contacts',EntityType::class, [
                 'class'=>Contacts::class,
-                'choice_label'=>'code_name',
+                'choice_label'=>function($contact){
+                    return ucfirst($contact->getLastName()).' '.ucfirst($contact->getFirstName()).' - '.$contact->getCountry();
+                },
                 'label'=>'Contacts',
                 'multiple'=>true,
             ])
             ->add('stashs',EntityType::class, [
                 'class'=>Stashs::class,
-                'choice_label'=>'code',
-                'label'=>'Contacts',
+                'choice_label'=>function($stash){
+                    return $stash->getCode().' : '.$stash->getAdress().' '.$stash->getCountry();
+                },
+                'label'=>'Planques',
                 'multiple'=>true,
             ])
         ;
