@@ -37,7 +37,7 @@ class Missions
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      * @Groups({"read:missionsCollection"})
      */
     private $content;
@@ -97,6 +97,8 @@ class Missions
      * @ORM\ManyToMany(targetEntity=Stashs::class, inversedBy="missions")
      */
     private $stashs;
+
+    
 
     
 
@@ -317,6 +319,8 @@ class Missions
 
         return $this;
     }
+
+    
 
  
 }
