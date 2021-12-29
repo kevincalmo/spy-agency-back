@@ -30,9 +30,11 @@ class Specialitys
     private $agents;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Missions::class, mappedBy="specialitys")
+     * @ORM\OneToMany(targetEntity=Missions::class, mappedBy="specialitys")
      */
     private $missions;
+
+   
 
     public function __construct()
     {
@@ -96,7 +98,7 @@ class Specialitys
     {
         if (!$this->missions->contains($mission)) {
             $this->missions[] = $mission;
-            $mission->addSpeciality($this);
+            $mission->setSpecialitys($this);
         }
 
         return $this;
@@ -105,9 +107,14 @@ class Specialitys
     public function removeMission(Missions $mission): self
     {
         if ($this->missions->removeElement($mission)) {
-            $mission->removeSpeciality($this);
+            // set the owning side to null (unless already changed)
+            if ($mission->getSpecialitys() === $this) {
+                $mission->setSpecialitys(null);
+            }
         }
 
         return $this;
     }
+
+    
 }

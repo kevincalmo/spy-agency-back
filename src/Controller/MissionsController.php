@@ -27,7 +27,7 @@ class MissionsController extends AbstractController
 
         $missions = $paginatorInterface->paginate(
             $donnees,
-            $request->query->getInt('page',1),
+            $request->query->getInt('page', 1),
             10
         );
 
@@ -48,11 +48,62 @@ class MissionsController extends AbstractController
         $form->handleRequest($request);
         $errorsForm = [];
 
+
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getdoctrine()->getManager();
-            $entityManager->persist($mission);
-            $entityManager->flush();
-            return $this->redirectToRoute("missions");
+
+            /*========== Phase de test des difféérentes données  ==========*/
+
+
+
+            /* Les agents et les cibles sont de nationalités différentes */
+            /* il faut assigner au moins un agent avec la spécialité demandé dans la mission */
+            $nbr_agent_with_speciality = 0;
+            $nbr_agents_targets_same_nationality = 0;
+            foreach ($mission->getAgents() as $agent) {
+                foreach ($mission->getTargets() as $target) {
+                    if ($agent->getCountry() === $target->getCountry()) {
+                        $nbr_agents_targets_same_nationality++;
+                    }
+                }
+                if ($mission->getSpecialitys()->count() === 1) {
+                    dump("ok");
+                    foreach ($mission->getSpecialitys() as $missionSpecility) {
+                        dump($missionSpecility->getName());
+                        foreach ($agent->getSpecialitys() as $agentSpeciality) {
+                            if ($missionSpecility->getName() === $agentSpeciality->getName()) {
+                                $nbr_agent_with_speciality++;
+                            }
+                        }
+                    }
+                }
+            }
+            if ($mission->getSpecialitys()->count() > 1) array_push($errorsForm, "Vous ne pouvez choisir qu'une seule spécialité pour la mission");
+            if ($nbr_agents_targets_same_nationality === 0) array_push($errorsForm, 'Les agents et les cibles ne peuvent avoir la même nationalité, veuillez changer d\'agents ou de cibles!');
+            if ($nbr_agent_with_speciality === 0 && $mission->getSpecialitys()->count() === 1) array_push($errorsForm, "Aucun agent sélectionné ne possède la spécialité requise pour cette mission");
+
+            /* les contacts sont obligatoirement de la nationalité de la mission */
+            $nbr_contact = 0;
+            foreach ($mission->getContacts() as $contact) {
+                if ($contact->getCountry() !== $mission->getCountry()) $nbr_contact++;
+            }
+            if ($nbr_contact > 0) array_push($errorsForm, "Veuillez choisir des contacts ayant la nationalité du lieu me mission");
+
+            /* Les planques sont obilgatoirement dans le même pays que la mission */
+            $nbr_stashs = 0;
+            foreach ($mission->getStashs() as $stash) {
+                if ($stash->getCountry() !== $mission->getCountry()) $nbr_stashs++;
+            }
+            if ($nbr_stashs > 0) array_push($errorsForm, "Veuillez choisir des planques présentent dans le pays de mission");
+
+            dump($errorsForm);
+            if (empty($errorsForm)) {
+                dump("La copie est propre");
+                /* $entityManager = $this->getdoctrine()->getManager();
+                $entityManager->persist($mission);
+                $entityManager->flush();
+                return $this->redirectToRoute("missions"); */
+            }
         }
 
         return $this->render('form-item.html.twig', [

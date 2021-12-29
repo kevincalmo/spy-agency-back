@@ -72,11 +72,6 @@ class Missions
      */
     private $end_date;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Specialitys::class, inversedBy="missions")
-     *
-     */
-    private $specialitys;
 
     /**
      * @ORM\ManyToMany(targetEntity=Agents::class, inversedBy="missions")
@@ -97,6 +92,11 @@ class Missions
      * @ORM\ManyToMany(targetEntity=Stashs::class, inversedBy="missions")
      */
     private $stashs;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Specialitys::class, inversedBy="missions")
+     */
+    private $specialitys;
 
     
 
@@ -201,30 +201,6 @@ class Missions
     }
 
     /**
-     * @return Collection|Specialitys[]
-     */
-    public function getSpecialitys(): Collection
-    {
-        return $this->specialitys;
-    }
-
-    public function addSpeciality(Specialitys $speciality): self
-    {
-        if (!$this->specialitys->contains($speciality)) {
-            $this->specialitys[] = $speciality;
-        }
-
-        return $this;
-    }
-
-    public function removeSpeciality(Specialitys $speciality): self
-    {
-        $this->specialitys->removeElement($speciality);
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Agents[]
      */
     public function getAgents(): Collection
@@ -316,6 +292,21 @@ class Missions
     public function removeStash(Stashs $stash): self
     {
         $this->stashs->removeElement($stash);
+
+        return $this;
+    }
+
+    /**
+     * 
+     */
+    public function getSpecialitys(): Collection
+    {
+        return $this->specialitys;
+    }
+
+    public function setSpecialitys(?Specialitys $specialitys): self
+    {
+        $this->specialitys = $specialitys;
 
         return $this;
     }
