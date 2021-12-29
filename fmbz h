@@ -1,0 +1,23 @@
+[33mcommit 88b8432e7f49fc467b78bebde22eacfc56b6c88f[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: kevincalmo <kevin.calmo@gmx.fr>
+Date:   Tue Dec 28 22:46:58 2021 -0500
+
+    Ajout de la bar de debug
+
+[33mcommit edc372250de1067a045fe66706f9619c0a8ed194[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: kevincalmo <kevin.calmo@gmx.fr>
+Date:   Tue Dec 28 11:14:37 2021 -0500
+
+    création de la base de donnée
+
+[33mcommit e687e12d1309bbecec96e22688e8a39478ed1f0d[m
+Author: kevincalmo <kevin.calmo@gmx.fr>
+Date:   Tue Dec 28 11:10:20 2021 -0500
+
+     installation des dépendances
+
+[33mcommit f20bbe0b19e01a1599981401b3d28b9a117a31aa[m
+Author: kevincalmo <kevin.calmo@gmx.fr>
+Date:   Tue Dec 28 10:59:29 2021 -0500
+
+    Initialisation du projet
