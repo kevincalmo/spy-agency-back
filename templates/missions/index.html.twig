@@ -1,0 +1,15 @@
+{% extends 'read-item.html.twig' %}
+
+{% block table_title %}
+<a class="btn btn-success" href="/admin/add-mission">Ajouter une mission</a>
+        <th scope="col">#</th>
+        <th scope="col">Titre/Nom de code</th>
+        <th scope="col">status</th>
+        <th scope="col">Action</th>
+ {% endblock %}
+
+ {% block table_body %}
+        <th scope="row">{{item.getId}}</th>
+        <td>{{item.getTitle}} : {{ item.getCodeName}}</td>
+        <td>{# {{item.getStatus.getName}} #}</td>
+{% endblock %}

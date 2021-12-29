@@ -1,0 +1,16 @@
+{% extends 'read-item.html.twig' %}
+
+
+{% block table_title %}
+<a class="btn btn-success" href="/add-agent">Ajouter un agent</a>
+        <th scope="col">#</th>
+        <th scope="col">Identité</th>
+        <th scope="col">Code Authentification</th>
+        <th scope="col">Action</th>
+ {% endblock %}
+
+ {% block table_body %}
+        <th scope="row">{{item.getId}}</th>
+        <td>{{item.getLastName}} {{item.getFirstName}}</td>
+        <td>{{item.getCodeAuth}}</td>
+{% endblock %}

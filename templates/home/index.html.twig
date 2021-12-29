@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AgentsController!{% endblock %}
+
+{% block body %}
+
+
+<div class=" container">
+    <h1 class="text-center">Liste des {{type}} ✅</h1>
+
+    {# Liste des agents #}
+        <div>
+        
+            <table class="table" id="items">
+                <thead>
+                    <tr>
+                        
+                        <th scope="col">#</th>
+                        <th scope="col">Identité</th>
+                        <th scope="col">Action</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                    
+                        <th scope="row">{{item.getId}}</th>
+                        <td>{{item.getTitle}} : {{ item.getCodeName}}</td>
+                        
+                        <td> 
+                        <a class="btn btn-info" href="/mission/{{item.getId}}" role="button">Détail de mission</a> 
+                        
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+</div>
+
+{% endblock %}
+{% block javascript %}
+    <script src="/javascript/app.js" defer><script>
+{% endblock %}
