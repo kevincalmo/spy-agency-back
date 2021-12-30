@@ -94,7 +94,7 @@ class Missions
     private $stashs;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Specialitys::class, inversedBy="missions")
+     * @ORM\ManyToMany(targetEntity=Specialitys::class, inversedBy="missions")
      */
     private $specialitys;
 
@@ -102,13 +102,16 @@ class Missions
 
     
 
+    
+
     public function __construct()
     {
-        $this->specialitys = new ArrayCollection();
+        
         $this->agents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->targets = new ArrayCollection();
         $this->stashs = new ArrayCollection();
+        $this->specialitys = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -297,19 +300,30 @@ class Missions
     }
 
     /**
-     * 
+     * @return Collection|Specialitys[]
      */
     public function getSpecialitys(): Collection
     {
         return $this->specialitys;
     }
 
-    public function setSpecialitys(?Specialitys $specialitys): self
+    public function addSpeciality(Specialitys $speciality): self
     {
-        $this->specialitys = $specialitys;
+        if (!$this->specialitys->contains($speciality)) {
+            $this->specialitys[] = $speciality;
+        }
 
         return $this;
     }
+
+    public function removeSpeciality(Specialitys $speciality): self
+    {
+        $this->specialitys->removeElement($speciality);
+
+        return $this;
+    }
+
+    
 
     
 

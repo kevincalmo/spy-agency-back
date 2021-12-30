@@ -60,24 +60,36 @@ class MissionsController extends AbstractController
             /* il faut assigner au moins un agent avec la spécialité demandé dans la mission */
             $nbr_agent_with_speciality = 0;
             $nbr_agents_targets_same_nationality = 0;
-            foreach ($mission->getAgents() as $agent) {
+            /* foreach ($mission->getAgents() as $agent) {
                 foreach ($mission->getTargets() as $target) {
-                    if ($agent->getCountry() === $target->getCountry()) {
-                        $nbr_agents_targets_same_nationality++;
-                    }
                 }
                 if ($mission->getSpecialitys()->count() === 1) {
                     dump("ok");
                     foreach ($mission->getSpecialitys() as $missionSpecility) {
                         dump($missionSpecility->getName());
                         foreach ($agent->getSpecialitys() as $agentSpeciality) {
+                        }
+                    }
+                }
+            } */
+
+            if ($mission->getSpecialitys()->count() === 1) {
+                foreach ($mission->getSpecialitys() as $missionSpecility) {
+                    foreach ($mission->getAgents() as $agent) {
+                        foreach ($agent->getSpecialitys() as $agentSpeciality) {
                             if ($missionSpecility->getName() === $agentSpeciality->getName()) {
                                 $nbr_agent_with_speciality++;
+                            }
+                        }
+                        foreach ($mission->getTargets() as $target) {
+                            if ($agent->getCountry() === $target->getCountry()) {
+                                $nbr_agents_targets_same_nationality++;
                             }
                         }
                     }
                 }
             }
+
             if ($mission->getSpecialitys()->count() > 1) array_push($errorsForm, "Vous ne pouvez choisir qu'une seule spécialité pour la mission");
             if ($nbr_agents_targets_same_nationality !== 0) array_push($errorsForm, 'Les agents et les cibles ne peuvent avoir la même nationalité, veuillez changer d\'agents ou de cibles!');
             if ($nbr_agent_with_speciality === 0 && $mission->getSpecialitys()->count() === 1) array_push($errorsForm, "Aucun agent sélectionné ne possède la spécialité requise pour cette mission");
@@ -99,10 +111,10 @@ class MissionsController extends AbstractController
             dump($errorsForm);
             if (empty($errorsForm)) {
                 dump("La copie est propre");
-                /* $entityManager = $this->getdoctrine()->getManager();
+                $entityManager = $this->getdoctrine()->getManager();
                 $entityManager->persist($mission);
                 $entityManager->flush();
-                return $this->redirectToRoute("missions"); */
+                return $this->redirectToRoute("missions");
             }
         }
 
