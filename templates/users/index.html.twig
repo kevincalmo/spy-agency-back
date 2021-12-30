@@ -1,0 +1,26 @@
+{% extends 'read-item.html.twig' %}
+
+
+{% block table_title %}
+<a class="btn btn-success" href="/add-user">Ajouter un utilisateur</a>
+        <th scope="col">#</th>
+        <th scope="col">Identité</th>
+        <th scope="col">Email</th>
+        <th scope="col">Rôle</th>
+        <th scope="col">Action</th>
+ {% endblock %}
+
+ {% block table_body %}
+        <th scope="row">{{item.getId}}</th>
+        <td>{{item.getLastName}} {{item.getFirstName}}</td>
+        <td>{{item.getEmail}}</td>
+        <td>
+            {% for role in item.roles%}
+                {% if role == 'ROLE_USER' %}
+                    Utilisateur
+                {% elseif role == 'ROLE_ADMIN' %}
+                    Administrateur,
+                {% endif %}
+            {% endfor %}
+        </td>
+{% endblock %}
