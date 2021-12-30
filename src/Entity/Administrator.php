@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\AdministratorRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=AdministratorRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class Administrator implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -46,7 +48,7 @@ class Administrator implements UserInterface, PasswordAuthenticatedUserInterface
     private $first_name;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string",length=255)
      */
     private $created_at;
 
@@ -163,12 +165,12 @@ class Administrator implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): string
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(string $created_at): self
     {
         $this->created_at = $created_at;
 
