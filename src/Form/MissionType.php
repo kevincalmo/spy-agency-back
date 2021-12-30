@@ -45,7 +45,11 @@ class MissionType extends AbstractType
             ->add('agents',EntityType::class, [
                 'class'=>Agents::class,
                 'choice_label'=>function($agent){
-                    return ucfirst($agent->getLastName()).' '.ucfirst($agent->getFirstName()).' - '.$agent->getCountry();
+                    $agentSpeciality = [];
+                    foreach($agent->getSpecialitys() as $speciality){
+                        $agentSpeciality[] = $speciality->getName();
+                    }
+                    return 'Nom/Prenom: '.ucfirst($agent->getLastName()).' '.ucfirst($agent->getFirstName()).' - Nationalité: '.$agent->getCountry().' - Spécialité: '.implode(',',$agentSpeciality);
                 },
                 'label'=>'Agents',
                 'multiple'=>true,
