@@ -79,7 +79,7 @@ class MissionsController extends AbstractController
                 }
             }
             if ($mission->getSpecialitys()->count() > 1) array_push($errorsForm, "Vous ne pouvez choisir qu'une seule spécialité pour la mission");
-            if ($nbr_agents_targets_same_nationality === 0) array_push($errorsForm, 'Les agents et les cibles ne peuvent avoir la même nationalité, veuillez changer d\'agents ou de cibles!');
+            if ($nbr_agents_targets_same_nationality !== 0) array_push($errorsForm, 'Les agents et les cibles ne peuvent avoir la même nationalité, veuillez changer d\'agents ou de cibles!');
             if ($nbr_agent_with_speciality === 0 && $mission->getSpecialitys()->count() === 1) array_push($errorsForm, "Aucun agent sélectionné ne possède la spécialité requise pour cette mission");
 
             /* les contacts sont obligatoirement de la nationalité de la mission */
