@@ -56,6 +56,10 @@ class Contacts
         $this->targets = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getFirstName().' '.$this->getLastName();
+    }
    
 
     public function getId(): ?int

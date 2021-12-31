@@ -49,7 +49,10 @@ class Stashs
         $this->missions = new ArrayCollection();
     }
 
-   
+    public function __toString()
+    {
+        return $this->getAdress();
+    }
 
     public function getId(): ?int
     {

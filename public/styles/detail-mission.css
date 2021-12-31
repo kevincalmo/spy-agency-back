@@ -1,0 +1,86 @@
+.btn-return{
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: 0.5s transform;
+}
+
+.btn-return:hover{
+    transition: 0.5s transform;
+    animation: jello-horizontal 0.9s both;
+}
+
+@keyframes jello-horizontal {
+    0% {
+              transform: scale3d(1, 1, 1);
+    }
+    30% {
+              transform: scale3d(1.25, 0.75, 1);
+    }
+    40% {
+              transform: scale3d(0.75, 1.25, 1);
+    }
+    50% {
+              transform: scale3d(1.15, 0.85, 1);
+    }
+    65% {
+              transform: scale3d(0.95, 1.05, 1);
+    }
+    75% {
+              transform: scale3d(1.05, 0.95, 1);
+    }
+    100% {
+              transform: scale3d(1, 1, 1);
+    }
+  }
+/* détails de missions */
+.mission_description h1 {
+    text-align: center;
+    margin: 2% 0;
+}
+.mission_description,
+.mission_ressource{
+    /* border: 2px solid black; */
+    padding: 1%;
+    margin: 2% 0;
+}
+
+
+.mission_description_complement{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.complement_list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.complement_list li {
+    margin-inline: 50px;
+    margin-top: 10px;
+}
+
+/* Détails des ressources */
+.mission_ressource{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.mission_ressource-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.mission_ressource_item{
+    display: flex;
+    flex-direction: column;
+}

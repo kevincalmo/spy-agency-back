@@ -1,59 +1,33 @@
 <?php
-
-namespace App\Controller;
+namespace App\EventSubscriber;
 
 use App\Entity\Missions;
-use App\Form\MissionType;
-use App\Repository\AgentsRepository;
-use App\Repository\MissionsRepository;
-use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-/**
- * @Route("/admin")
- */
-class MissionsController extends AbstractController
+class EasyAdminSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @Route("/missions", name="missions")
-     */
-    public function index(MissionsRepository $missionsRepository, Request $request, PaginatorInterface $paginatorInterface): Response
+    
+
+    public static function getSubscribedEvents()
     {
-
-        $donnees = $missionsRepository->findAll();
-
-        $missions = $paginatorInterface->paginate(
-            $donnees,
-            $request->query->getInt('page', 1),
-            10
-        );
-
-
-        return $this->render('missions/index.html.twig', [
-            'items' => $missions,
-            'type' => 'mission'
-        ]);
+        return [
+            BeforeEntityUpdatedEvent::class => ['setMissions'],
+        ];
     }
 
-    /**
-     * @Route("/add-mission" , name="add-mission")
-     */
-    public function addMission(Request $request, AgentsRepository $agentsRepository): Response
+    public function setMissions(BeforeEntityUpdatedEvent $event)
     {
-        $mission = new Missions;
-        $form = $this->createForm(MissionType::class, $mission);
-        $form->handleRequest($request);
-        $errorsForm = [];
+        $mission = $event->getEntityInstance();
+            
+        if(!$mission instanceof Missions){
+            return;
+        }
 
-
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            /*========== Phase de test des difféérentes données  ==========*/
-
+        /*========== Phase de test des difféérentes données  ==========*/
+            $errorsForm = [];
 
 
             /* Les agents et les cibles sont de nationalités différentes */
@@ -108,44 +82,7 @@ class MissionsController extends AbstractController
             }
             if ($nbr_stashs > 0) array_push($errorsForm, "Veuillez choisir des planques présentent dans le pays de mission");
 
-            dump($errorsForm);
-            if (empty($errorsForm)) {
-                dump("La copie est propre");
-                $entityManager = $this->getdoctrine()->getManager();
-                $entityManager->persist($mission);
-                $entityManager->flush();
-                return $this->redirectToRoute("missions");
-            }
-        }
 
-        return $this->render('form-item.html.twig', [
-            'form' => $form->createView(),
-            'type' => 'mission',
-            'function' => 'Creer',
-            'errorsValidation' => $errorsForm,
-        ]);
-    }
-
-    /**
-     * @Route("/edit-mission/{id}" , name="edit-mission")
-     */
-    public function editAgent($id, Request $request, MissionsRepository $missionsRepository): Response
-    {
-        $mission = $missionsRepository->find($id);
-        $form = $this->createForm(MissionType::class, $mission);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getdoctrine()->getManager();
-            $entityManager->flush();
-            return $this->redirectToRoute("missions");
-        }
-
-
-        return $this->render('missions/form.html.twig', [
-            'form' => $form->createView(),
-            'type' => 'mission',
-            'function' => 'Editer'
-        ]);
+            dd($errorsForm);
     }
 }

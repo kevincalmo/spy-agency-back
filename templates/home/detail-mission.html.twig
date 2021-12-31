@@ -1,48 +1,109 @@
 {% extends 'base.html.twig' %}
 
+{% block css %}<link rel="stylesheet" href="/styles/detail-mission.css">
+{% endblock %}
 {% block body %}
-    <h1>Fiche de mission</h1>
 
-   <p>{{mission.getTitle}}</p>
-   <p>{{mission.getContent}}</p>
-   <p>{{mission.getCodeName}}</p>
-   <p>{{mission.getCountry}}</p>
-   <p>{{mission.getType}}</p>
-   {# <p>{{mission.getStartDate}}</p>
-   <p>{{mission.getEndDate}}</p> #}
+	<a class="btn btn-primary btn-return" href="/">Liste des missions</a>
 
-    <p>Les agents sur la mission: </p>
-    <ul>
-        {% for agent in mission.getAgents %}
-            <li>{{agent.getLastName}} {{agent.getFirstName}}</li>
-        {% endfor %}
-    </ul>
+	<div class="mission_description">
+		<h1>Fiche de mission:
 
-    <p>Les contacts sur la mission: </p>
-    <ul>
-        {% for contact in mission.getContacts %}
-            <li>{{contact.getLastName}} {{contact.getFirstName}}</li>
-        {% endfor %}
-    </ul>
+			{{mission.getTitle}}</h1>
+		
+		<div class="mission_description_content">
+            
+			{{mission.content}}
 
-    <p>Les cibles sur la mission: </p>
-    <ul>
-        {% for target in mission.getTargets %}
-            <li>{{target.getLastName}} {{target.getFirstName}}</li>
-        {% endfor %}
-    </ul>
+			La(es) cibles de cette mission :
+			{% for target in mission.getTargets %}
+				<b><u>{{target.getLastName | upper}}
+				{{target.getFirstName | upper}}</u></b>,
+			{% endfor %}
 
-    <p>Les planques sur la mission: </p>
-    <ul>
-        {% for stash in mission.getStashs %}
-            <li>{{stash.getAdress}}</li>
-        {% endfor %}
-    </ul>
 
-    <p>La spécialité de la mission: </p>
-    <ul>
-        {% for speciality in mission.getSpecialitys %}
-            <li>{{speciality.getName}}</li>
-        {% endfor %}
-    </ul>
-{% endblock %} 
+		</div>
+
+		<div class="mission_description_complement">
+
+			<h2>Compléments :</h2>
+			<ul class="complement_list">
+				<li>
+					Pays de mission :
+					<b>{{mission.getCountry}}</b>
+				</li>
+
+				<li>Type de mission :
+					<b>{{mission.getType}}</b>
+				</li>
+
+				<li>La spécialité de la mission:
+
+					{% for speciality in mission.getSpecialitys %}
+						<b>{{speciality.getName}}</b>,
+				{% endfor %}
+
+			</li>
+		</ul>
+	</div>
+
+
+</div>
+<div class="mission_ressource">
+
+	<h3>Les agents sur la mission:
+	</h3>
+
+	{% for agent in mission.getAgents %}
+		<div class="mission_ressource_item">
+			<div class="mission_ressource_item-image">
+				<img width="60" src="/assets/avatar-men.png" alt="avatar">
+
+			</div>
+			<div class="mission_ressource_item-content">
+				{{agent.getLastName | upper}}
+				{{agent.getFirstName | upper}}
+			</div>
+		</div>
+	{% endfor %}
+
+</div>
+<div class="mission_ressource">
+
+	<h3>Les contacts sur la mission:
+	</h3>
+	<div class="mission_ressource-content">
+
+		{% for contact in mission.getContacts %}
+			<div class="mission_ressource_item">
+				<div class="mission_ressource_item-image">
+					<img width="60" src="/assets/avatar-men.png" alt="avatar">
+				</div>
+				<div class="mission_ressource_item-content">
+					{{contact.getLastName | upper}}
+					{{contact.getFirstName | upper}}
+				</div>
+			</div>
+
+		{% endfor %}
+
+	</div>
+</div>
+<div class="mission_ressource">
+
+	<h3>Les planques sur la mission:
+	</h3>
+
+	{% for stash in mission.getStashs %}
+		<div class="mission_ressource_item">
+			<div class="mission_ressource_item-image">
+				<img width="60" src="/assets/avatar-men.png" alt="avatar">
+            {{stash.getAdress | upper}}
+			</div>
+			
+		</div>
+
+	{% endfor %}
+
+
+</div>{% endblock %}
